@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Ninja Survivors</string>
+
+    <string name="action.settings">Settings</string>
+    <string name="action.info">Information</string>
+
+    <string name="button.play">Play</string>
+    <string name="button.leaderboards">Leaderboard</string>
+    <string name="button.quit">Quit</string>
+
+    <string name="dialog.username.title">Username</string>
+    <string name="dialog.username.hint">Enter your username</string>
+    <string name="dialog.username.positive">Play</string>
+
+    <string name="dialog.leaderboards.title">Leaderboard</string>
+    <string name="dialog.leaderboards.body">Current highest scores:</string>
+    <string name="dialog.leaderboards.positive">Got it!</string>
+
+    <string name="dialog.close.body">Do you want to close the game?</string>
+    <string name="dialog.close.positive">Yes</string>
+    <string name="dialog.close.negative">No</string>
+
+    <string name="dialog.info.title">About this game</string>
+    <string name="dialog.info.body">Ninja Survivors was made by Ariel Gómez</string>
+    <string name="dialog.info.positive">Cool!</string>
+
+    <string name="preference.scores.name">com.example.ninjagame_scores_preferences</string>
+
+    <string name="preference.dialog.positive">Apply</string>
+    <string name="preference.dialog.negative">Cancel</string>
+
+    <string name="preference.default.player_name">No one</string>
+    <string name="preference.default.player_score">yet</string>
+    <string name="preference.default.player_points">%1d points</string>
+    <string name="preference.default.ninja_drawable">ninja01</string>
+
+    <string name="preference.category.menu">Menu settings</string>
+
+    <string name="preference.checkbox.background_music">Background music</string>
+    <string name="preference.checkbox.background_music.desc">Check to play background music</string>
+
+    <string name="preference.category.game">Game settings</string>
+
+    <string name="preference.list.ninja">Ninja sprite</string>
+    <string name="preference.list.ninja.dialog.title">Select a ninja:</string>
+    <string name="preference.list.ninja.desc">Select a ninja sprite</string>
+
+    <string name="preference.edit_text.number_enemies">Number of enemies</string>
+    <string name="preference.edit_text.number_enemies.dialog.title">Input the number of enemies:</string>
+    <string name="preference.edit_text.number_enemies.desc">Choose how many enemies you want to fight against</string>
+
+    <string name="preference.list.ninja.01">Normal ninja</string>
+    <string name="preference.list.ninja.02">Jetpack ninja</string>
+    <string name="preference.list.ninja.03">Calm ninja</string>
+
+    <string name="editText.error">Enter an username</string>
+
+    <string name="toast.chosen_ninja">You have chosen the %1s</string>
+</resources>
