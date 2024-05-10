@@ -116,8 +116,6 @@ public class MainActivity extends AppCompatActivity {
         } else if (mp != null && mp.isPlaying()) {
             mp.pause();
         }
-
-
     }
 
     private void updateNinjaSprite() {
