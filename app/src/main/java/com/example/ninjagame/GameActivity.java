@@ -13,8 +13,6 @@ public class GameActivity extends AppCompatActivity {
     private boolean isMusic;
     private SharedPreferences pref;
     private MediaPlayer mp;
-    private int endCode;
-    private int score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +81,18 @@ public class GameActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void showDialogGameOver() {
+    private void showDialogGameOver(int endCode, int score) {
         runOnUiThread(() -> {
             // setup the alert builder
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(getString(R.string.dialog_game_over_title));
-            builder.setMessage(getResources().getQuantityString(R.plurals.dialog_game_over_body, endCode, endCode) + " " + getString(R.string.dialog_game_over_score, score));
 
+            if (endCode == 0) {
+                builder.setMessage(getString(R.string.dialog_game_over_body_win, score));
+
+            } else {
+                builder.setMessage(getString(R.string.dialog_game_over_body_lose, score));
+            }
             // add the buttons
             builder.setPositiveButton(getString(R.string.dialog_game_over_positive), (dialog, which) -> {
                 finish();
@@ -108,9 +111,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void finishGame(int endCode, int score) {
-        this.endCode = endCode;
-        this.score = score;
 
-        showDialogGameOver();
+        showDialogGameOver(endCode, score);
     }
 }

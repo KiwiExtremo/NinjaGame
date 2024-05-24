@@ -30,7 +30,7 @@ public class GameView extends View {
 
     ////// NINJA //////
 
-    private boolean alive = true;
+    private boolean alive = true, isLooping = true;;
     private Paint usernamePaint, scorePaint;
     private Graphics ninjaPlayable;
     private int ninjaRotation;
@@ -45,14 +45,13 @@ public class GameView extends View {
 
     ////// LLANÇAMENT //////
     private Graphics knife;
-    private static int INC_KNIFE_VELOCITY = 12;
+    private static int INC_KNIFE_VELOCITY = 25;
     private boolean activeKnife = false;
     private int knifeTime;
     private int chosenEnemies, chosenSmallEnemies;
     private SharedPreferences prefs, scoresPrefs;
     private Vector<Graphics> enemies;
     private int screenWidth, screenHeight;
-
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -236,7 +235,7 @@ public class GameView extends View {
         double nIncX = ninjaPlayable.getIncX() + ninjaAcceleration * Math.cos(Math.toRadians(ninjaPlayable.getAngle())) * retard;
         double nIncY = ninjaPlayable.getIncY() + ninjaAcceleration * Math.sin(Math.toRadians(ninjaPlayable.getAngle())) * retard;
 
-        if (Math.hypot(nIncX,nIncY) <= Graphics.MAX_SPEED){
+        if (Math.hypot(nIncX,nIncY) <= Graphics.MAX_SPEED) {
             ninjaPlayable.setIncX(nIncX);
             ninjaPlayable.setIncY(nIncY);
         }
@@ -249,7 +248,7 @@ public class GameView extends View {
 
         if (activeKnife) {
             knife.increasePosition(retard);
-            knifeTime -=retard;
+            knifeTime -= retard;
 
             if (knifeTime < 0) {
                 activeKnife = false;
@@ -257,8 +256,9 @@ public class GameView extends View {
             } else {
                 for (int i = 0; i < enemies.size(); i++) {
                     if (knife.isColliding(enemies.elementAt(i))) {
-                        destroyEnemy(i);
                         updateScore(1);
+
+                        destroyEnemy(i);
 
                         break;
                     }
@@ -273,23 +273,34 @@ public class GameView extends View {
                     destroyPlayer();
 
                 } else {
-                    destroyEnemy(i);
                     updateScore(-1);
+
+                    destroyEnemy(i);
                 }
             }
         }
     }
 
+    private void cleanGame() {
+        activeKnife = false;
+        alive = false;
+
+        for (int i = 0; i < enemies.size(); i++) {
+            destroyEnemy(i);
+        }
+    }
     private void destroyPlayer() {
         soundPool.play(explosioSoundID, 1, 1, 1, 0, 1);
 
-        alive = false;
+        isLooping = false;
 
         saveScoreToSharedPrefs(-1);
     }
 
     private void destroyEnemy(int i) {
         soundPool.play(explosioSoundID, 1, 1, 1, 0, 1);
+
+        activeKnife = false;
 
         if (enemies.get(i).getDrawable() == drwEnemy) {
             for (int n = 0; n < chosenSmallEnemies; n++) {
@@ -309,11 +320,11 @@ public class GameView extends View {
         }
 
         enemies.remove(i);
-        
-        activeKnife = false;
-        
+
         if (enemies.size() == 0) {
             saveScoreToSharedPrefs(0);
+
+            isLooping = false;
         }
     }
 
@@ -370,23 +381,39 @@ public class GameView extends View {
     }
 
     public void saveScoreToSharedPrefs(int endCode) {
-        scoresPrefs = parent.getSharedPreferences(getContext().getString(R.string.preference_scores_name), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = scoresPrefs.edit();
-        int last = 1, playerScore = 0;
+        int lastPosition = 1, playerScore = 0, playerPreviousScore = Integer.MIN_VALUE;
+        boolean hasScore = false;
+        String playerName;
 
+        scoresPrefs = parent.getSharedPreferences(getContext().getString(R.string.preference_scores_name), Context.MODE_PRIVATE);
+
+        // Search for the last player position in the leaderboards, while looking for current player's last score
         while (playerScore != -1) {
-            playerScore = scoresPrefs.getInt("score" + last, -1);
+            playerName = scoresPrefs.getString("player" + lastPosition, "No one");
+            playerScore = scoresPrefs.getInt("score" + lastPosition, -1);
+
+            // Fetch current player's last score (if any)
+            if (playerName.equals(username)) {
+                playerPreviousScore = playerScore;
+                hasScore = true;
+            }
 
             if (playerScore != -1) {
-                last++;
+                lastPosition++;
             }
         }
 
-        editor.putString("player" + last, username);
-        editor.putInt("score" + last, score);
+        // Compare current score with previous one, and update it if necessary
+        if (hasScore && playerPreviousScore < score) {
+            SharedPreferences.Editor editor = scoresPrefs.edit();
 
-        editor.apply();
+            editor.putString("player" + lastPosition, username);
+            editor.putInt("score" + lastPosition, score);
 
+            editor.apply();
+        }
+
+        cleanGame();
         parent.finishGame(endCode, score);
     }
 
@@ -413,7 +440,7 @@ public class GameView extends View {
         @Override
         public void run() {
 
-            while (alive) {
+            while (isLooping) {
                 updateMovement();
             }
         }

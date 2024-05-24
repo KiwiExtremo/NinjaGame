@@ -30,11 +30,8 @@
     <string name="dialog.give_up.negative">Keep trying</string>
 
     <string name="dialog.game_over.title">Game Over!</string>
-    <plurals name="dialog.game_over.body">
-        <item quantity="zero">Congratulations! You won.</item>
-        <item quantity="other">Too bad! You lost.</item>
-    </plurals>
-    <string name="dialog.game_over.score">Your score is %d points.</string>
+    <string name="dialog.game_over.body.win">Congratulations! You won. Your score is %d points.</string>
+    <string name="dialog.game_over.body.lose">Too bad! You lost. Your score is %d points.</string>
     <string name="dialog.game_over.positive">Got it!</string>
 
     <string name="preference.scores.name">com.example.ninjagame_scores_preferences</string>
