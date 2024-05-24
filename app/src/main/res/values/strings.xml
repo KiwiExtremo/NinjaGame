@@ -55,5 +55,14 @@
 
     <string name="editText.error">Enter an username</string>
 
-    <string name="toast.chosen_ninja">You have chosen the %1s</string>
+    <string name="toast.chosen_ninja">You have chosen the %s</string>
+    <plurals name="toast.chosen_enemies.correct">
+        <item quantity="one">You have chosen %d enemy</item>
+        <item quantity="other">You have chosen %d enemies</item>
+    </plurals>
+    <string name="toast.chosen_enemies.empty">The number of enemies can\'t be empty</string>
+    <string name="toast.chosen_enemies.out_of_bounds">The number of enemies must be between 1 and 25</string>
+
+    <string name="game.text.username">Player: %s</string>
+    <string name="game.text.score">Score: %d</string>
 </resources>

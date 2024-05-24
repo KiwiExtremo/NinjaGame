@@ -252,7 +252,6 @@ public class MainActivity extends AppCompatActivity {
             item.measure(0, 0);
 
             // set the size of the listView to 5.7 times the item size
-            // TODO change width with guidelines programmatically (stackoverflow)
             ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(0, (int) (5.7 * item.getMeasuredHeight()));
             scores.setLayoutParams(params);
         }

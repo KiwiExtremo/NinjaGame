@@ -20,6 +20,29 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
         if (numberEnemiesPreference != null) {
             numberEnemiesPreference.setOnBindEditTextListener(
                     editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER));
+
+            // Check number of enemies input
+            numberEnemiesPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                // Check if input is null
+                if ("".equals((String) newValue)) {
+                    Toast.makeText(getActivity(), getString(R.string.toast_chosen_enemies_empty), Toast.LENGTH_LONG).show();
+
+                    return false;
+                }
+
+                int numberEnemies = Integer.parseInt((String) newValue);
+
+                // Check if input is under 1 or over 25
+                if (numberEnemies <= 0 || numberEnemies > 25) {
+                    Toast.makeText(getActivity(), getString(R.string.toast_chosen_enemies_out_of_bounds), Toast.LENGTH_LONG).show();
+
+                    return false;
+                }
+
+                Toast.makeText(getActivity(), getResources().getQuantityString(R.plurals.toast_chosen_enemies_correct, numberEnemies, numberEnemies), Toast.LENGTH_LONG).show();
+
+                return true;
+            });
         }
 
         // show toast whenever a new ninja is chosen
@@ -30,13 +53,15 @@ public class PreferencesFragment extends PreferenceFragmentCompat {
                 if (index != -1) {
                     CharSequence[] entries = chosenNinjaPreference.getEntries();
                     showToastChosenNinja(entries[index]);
+
+                    return true;
                 }
-                return true;
+                return false;
             });
         }
     }
 
     private void showToastChosenNinja(CharSequence chosenNinja) {
-        Toast.makeText(getActivity(), getString(R.string.toast_chosen_ninja, chosenNinja.toString()), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), getString(R.string.toast_chosen_ninja, chosenNinja.toString()), Toast.LENGTH_LONG).show();
     }
 }

@@ -19,18 +19,17 @@
         app:iconSpaceReserved="false">
 
         <ListPreference
-            android:defaultValue="1"
             android:dialogTitle="@string/preference.list.ninja.dialog.title"
             android:entries="@array/ninjas"
             android:entryValues="@array/ninjaIds"
             android:key="chosenNinja"
             android:summary="@string/preference.list.ninja.desc"
             android:title="@string/preference.list.ninja"
+            app:defaultValue="@string/preference.default.ninja_drawable"
             app:iconSpaceReserved="false"
             app:negativeButtonText="@string/preference.dialog.negative" />
 
         <EditTextPreference
-            android:defaultValue="5"
             android:dialogTitle="@string/preference.edit_text.number_enemies.dialog.title"
             android:inputType="number"
             android:key="chosenEnemies"
@@ -38,6 +37,7 @@
             android:singleLine="true"
             android:summary="@string/preference.edit_text.number_enemies.desc"
             android:title="@string/preference.edit_text.number_enemies"
+            app:defaultValue="5"
             app:iconSpaceReserved="false"
             app:negativeButtonText="@string/preference.dialog.negative"
             app:positiveButtonText="@string/preference.dialog.positive" />
