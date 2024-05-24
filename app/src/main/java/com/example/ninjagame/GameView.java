@@ -46,7 +46,7 @@ public class GameView extends View {
     ////// LLANÇAMENT //////
     private Graphics knife;
     private static int INC_KNIFE_VELOCITY = 12;
-    private boolean activeKnife =false;
+    private boolean activeKnife = false;
     private int knifeTime;
     private int chosenEnemies, chosenSmallEnemies;
     private SharedPreferences prefs, scoresPrefs;
@@ -264,19 +264,20 @@ public class GameView extends View {
                     }
                 }
             }
+        }
 
-            for (int i = 0; i < enemies.size(); i++) {
-                if (ninjaPlayable.isColliding(enemies.elementAt(i))) {
-                    if (enemies.elementAt(i).getDrawable() == drwEnemy) {
-                        destroyPlayer();
-                    } else {
-                        updateScore(-1);
-                    }
+        for (int i = 0; i < enemies.size(); i++) {
+            if (ninjaPlayable.isColliding(enemies.elementAt(i))) {
+
+                if (enemies.elementAt(i).getDrawable() == drwEnemy) {
+                    destroyPlayer();
+
+                } else {
+                    destroyEnemy(i);
+                    updateScore(-1);
                 }
             }
         }
-
-
     }
 
     private void destroyPlayer() {
@@ -312,7 +313,7 @@ public class GameView extends View {
         activeKnife = false;
         
         if (enemies.size() == 0) {
-            saveScoreToSharedPrefs(1);
+            saveScoreToSharedPrefs(0);
         }
     }
 

@@ -8,8 +8,8 @@
         android:toYDelta="85%p"/>
     <rotate
         android:startOffset="500"
-        android:pivotX="100%"
-        android:pivotY="500%"
+        android:pivotX="750%"
+        android:pivotY="1000%"
         android:fromDegrees="0"
         android:toDegrees="360"
         android:duration="1000" />

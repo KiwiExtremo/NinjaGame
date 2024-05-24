@@ -84,19 +84,22 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void showDialogGameOver() {
-        // setup the alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.dialog_game_over_title));
-        builder.setMessage(getResources().getQuantityString(R.plurals.dialog_game_over_body, endCode, endCode) + " " + getString(R.string.dialog_game_over_score, score));
+        runOnUiThread(() -> {
+            // setup the alert builder
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.dialog_game_over_title));
+            builder.setMessage(getResources().getQuantityString(R.plurals.dialog_game_over_body, endCode, endCode) + " " + getString(R.string.dialog_game_over_score, score));
 
-        // add the buttons
-        builder.setPositiveButton(getString(R.string.dialog_game_over_positive), (dialog, which) -> {
-            finish();
+            // add the buttons
+            builder.setPositiveButton(getString(R.string.dialog_game_over_positive), (dialog, which) -> {
+                finish();
+            });
+
+            // create and show the alert dialog
+            AlertDialog dialog = builder.create();
+            dialog.setCancelable(false);
+            dialog.show();
         });
-
-        // create and show the alert dialog
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     @Override
