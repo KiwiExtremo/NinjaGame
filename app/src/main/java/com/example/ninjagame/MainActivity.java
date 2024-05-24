@@ -3,7 +3,6 @@ package com.example.ninjagame;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.preference.PreferenceManager;
 
 import android.animation.AnimatorSet;
@@ -20,6 +19,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -35,7 +36,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private boolean isMusic;
     private String ninjaSprite;
-    private ImageView ivNinja;
+    private ImageView ivNinja, ivNinjaStatic;
     private AnimatorSet rotateSet;
     private SharedPreferences pref, scoresPref;
     private MediaPlayer mp;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         updateBackgroundMusic();
         updateNinjaSprite();
     }
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateBackgroundMusic() {
-        isMusic = pref.getBoolean("checkMusic", true);
+        isMusic = pref.getBoolean("checkMainMusic", true);
 
         if (isMusic) {
             mp.setLooping(true);
@@ -123,11 +125,43 @@ public class MainActivity extends AppCompatActivity {
         int ninjaID = getResources().getIdentifier(ninjaSprite, "drawable", this.getPackageName());
 
         ivNinja.setImageResource(ninjaID);
+        ivNinjaStatic.setImageResource(ninjaID);
 
+        startTweenAnimation();
+    }
+
+    private void startTweenAnimation() {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.ninja_animation);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                // Nothing to do here
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                ivNinja.setVisibility(View.GONE);
+                ivNinjaStatic.setVisibility(View.VISIBLE);
+
+                startRotatingAnimation();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                // Nothing to do here
+            }
+        });
+
+        ivNinja.startAnimation(animation);
+
+
+    }
+
+    private void startRotatingAnimation() {
         TimeInterpolator inter = new LinearInterpolator();
         ValueAnimator rotateImage;
 
-        rotateImage = ObjectAnimator.ofFloat(ivNinja, "rotation", 0, 360);
+        rotateImage = ObjectAnimator.ofFloat(ivNinjaStatic, "rotation", 0, 360);
         rotateImage.setDuration(3000);
         rotateImage.setRepeatCount(ValueAnimator.INFINITE);
         rotateImage.setInterpolator(inter);
@@ -181,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
         return sortedMap;
     }
+
     private LinearLayout createWrappedLayout(EditText editText) {
         LinearLayout linearLayout = new LinearLayout(this);
 
@@ -215,7 +250,6 @@ public class MainActivity extends AppCompatActivity {
     private void showDialogLeaderboards() {
         // Inflate the leaderboards xml
         View vLeaderboards = getLayoutInflater().inflate(R.layout.activity_leaderboard, null);
-        // TODO set max height of listView to avoid filling the whole screen (tutorial on stackoverflow)
 
         // Get leaderboards' data from shared preferences
         LinkedHashMap<String, String> mPlayerScores = getScoresFromPreferences();
@@ -258,7 +292,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showDialogInputUsername() {
-        // TODO shorten code / extract methods
         // setup the alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.dialog_username_title));
@@ -333,5 +366,7 @@ public class MainActivity extends AppCompatActivity {
         mp = MediaPlayer.create(MainActivity.this, R.raw.background_music);
 
         ivNinja = findViewById(R.id.ivNinja);
+        ivNinjaStatic = findViewById(R.id.ivNinjaStatic);
+        ivNinjaStatic.setVisibility(View.INVISIBLE);
     }
 }

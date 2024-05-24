@@ -24,6 +24,19 @@
     <string name="dialog.info.body">Ninja Survivors was made by Ariel Gómez</string>
     <string name="dialog.info.positive">Cool!</string>
 
+    <string name="dialog.give_up.title">Give up?</string>
+    <string name="dialog.give_up.body">Are you sure you want give up?</string>
+    <string name="dialog.give_up.positive">I give up</string>
+    <string name="dialog.give_up.negative">Keep trying</string>
+
+    <string name="dialog.game_over.title">Game Over!</string>
+    <plurals name="dialog.game_over.body">
+        <item quantity="one">Congratulations! You won.</item>
+        <item quantity="other">Too bad! You lost.</item>
+    </plurals>
+    <string name="dialog.game_over.score">Your score is %d points</string>
+    <string name="dialog.game_over.positive">Got it!</string>
+
     <string name="preference.scores.name">com.example.ninjagame_scores_preferences</string>
 
     <string name="preference.dialog.positive">Apply</string>
@@ -36,7 +49,8 @@
 
     <string name="preference.category.menu">Menu settings</string>
 
-    <string name="preference.checkbox.background_music">Background music</string>
+    <string name="preference.checkbox.background_music">Main menu BG music</string>
+    <string name="preference.checkbox.game_background_music">Game BG music</string>
     <string name="preference.checkbox.background_music.desc">Check to play background music</string>
 
     <string name="preference.category.game">Game settings</string>
@@ -49,6 +63,10 @@
     <string name="preference.edit_text.number_enemies.dialog.title">Input the number of enemies:</string>
     <string name="preference.edit_text.number_enemies.desc">Choose how many enemies you want to fight against</string>
 
+    <string name="preference.edit_text.number_small_enemies">Number of small enemies</string>
+    <string name="preference.edit_text.number_small_enemies.dialog.title">Input the number of small enemies:</string>
+    <string name="preference.edit_text.number_small_enemies.desc">Choose how many small enemies an enemy will divide into</string>
+
     <string name="preference.list.ninja.01">Normal ninja</string>
     <string name="preference.list.ninja.02">Jetpack ninja</string>
     <string name="preference.list.ninja.03">Calm ninja</string>
@@ -56,12 +74,19 @@
     <string name="editText.error">Enter an username</string>
 
     <string name="toast.chosen_ninja">You have chosen the %s</string>
+
     <plurals name="toast.chosen_enemies.correct">
         <item quantity="one">You have chosen %d enemy</item>
         <item quantity="other">You have chosen %d enemies</item>
     </plurals>
+
+    <plurals name="toast.chosen_small_enemies.correct">
+        <item quantity="one">You have chosen %d small enemy</item>
+        <item quantity="other">You have chosen %d small enemies</item>
+    </plurals>
+
     <string name="toast.chosen_enemies.empty">The number of enemies can\'t be empty</string>
-    <string name="toast.chosen_enemies.out_of_bounds">The number of enemies must be between 1 and 25</string>
+    <string name="toast.chosen_enemies.out_of_bounds">The number of enemies must be between %1$d and %2$d</string>
 
     <string name="game.text.username">Player: %s</string>
     <string name="game.text.score">Score: %d</string>

@@ -8,7 +8,7 @@
 
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="checkMusic"
+            android:key="checkMainMusic"
             android:summary="@string/preference.checkbox.background_music.desc"
             android:title="@string/preference.checkbox.background_music"
             app:icon="@drawable/music_average"
@@ -18,6 +18,15 @@
         android:title="@string/preference.category.game"
         app:iconSpaceReserved="false">
 
+        <CheckBoxPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="true"
+            android:key="checkGameMusic"
+            android:summary="@string/preference.checkbox.background_music.desc"
+            android:title="@string/preference.checkbox.game_background_music"
+            app:icon="@drawable/music_average"
+            app:iconSpaceReserved="true" />
         <ListPreference
             android:dialogTitle="@string/preference.list.ninja.dialog.title"
             android:entries="@array/ninjas"
@@ -38,6 +47,20 @@
             android:summary="@string/preference.edit_text.number_enemies.desc"
             android:title="@string/preference.edit_text.number_enemies"
             app:defaultValue="5"
+            app:iconSpaceReserved="false"
+            app:negativeButtonText="@string/preference.dialog.negative"
+            app:positiveButtonText="@string/preference.dialog.positive" />
+        <EditTextPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:dialogTitle="@string/preference.edit_text.number_small_enemies.dialog.title"
+            android:inputType="number"
+            android:key="chosenSmallEnemies"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/preference.edit_text.number_small_enemies.desc"
+            android:title="@string/preference.edit_text.number_small_enemies"
+            app:defaultValue="3"
             app:iconSpaceReserved="false"
             app:negativeButtonText="@string/preference.dialog.negative"
             app:positiveButtonText="@string/preference.dialog.positive" />

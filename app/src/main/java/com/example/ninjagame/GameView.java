@@ -26,8 +26,7 @@ public class GameView extends View {
     private int score = 0;
     private float mX=0, mY=0;
     private boolean launch = false;
-    private Drawable drwNinja, drwKnife, drwEnemy;
-    private Drawable drwEnemyPieces[] = new Drawable[8];
+    private Drawable drwNinja, drwKnife, drwEnemy, drwMiniEnemy;
 
     ////// NINJA //////
 
@@ -49,11 +48,10 @@ public class GameView extends View {
     private static int INC_KNIFE_VELOCITY = 12;
     private boolean activeKnife =false;
     private int knifeTime;
-    private int chosenEnemies;
+    private int chosenEnemies, chosenSmallEnemies;
     private SharedPreferences prefs, scoresPrefs;
     private Vector<Graphics> enemies;
     private int screenWidth, screenHeight;
-    private boolean win = false;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -260,7 +258,7 @@ public class GameView extends View {
                 for (int i = 0; i < enemies.size(); i++) {
                     if (knife.isColliding(enemies.elementAt(i))) {
                         destroyEnemy(i);
-                        updateScore();
+                        updateScore(1);
 
                         break;
                     }
@@ -269,7 +267,11 @@ public class GameView extends View {
 
             for (int i = 0; i < enemies.size(); i++) {
                 if (ninjaPlayable.isColliding(enemies.elementAt(i))) {
-                    destroyPlayer();
+                    if (enemies.elementAt(i).getDrawable() == drwEnemy) {
+                        destroyPlayer();
+                    } else {
+                        updateScore(-1);
+                    }
                 }
             }
         }
@@ -282,17 +284,15 @@ public class GameView extends View {
 
         alive = false;
 
-        saveScoreToSharedPrefs();
+        saveScoreToSharedPrefs(-1);
     }
 
     private void destroyEnemy(int i) {
         soundPool.play(explosioSoundID, 1, 1, 1, 0, 1);
 
-        int numParts = 3;
-
         if (enemies.get(i).getDrawable() == drwEnemy) {
-            for (int n = 0; n < numParts; n++) {
-                Graphics enemy = new Graphics(this, drwEnemyPieces[n]);
+            for (int n = 0; n < chosenSmallEnemies; n++) {
+                Graphics enemy = new Graphics(this, drwMiniEnemy);
 
                 enemy.setPosX(enemies.get(i).getPosX());
                 enemy.setPosY(enemies.get(i).getPosY());
@@ -312,12 +312,16 @@ public class GameView extends View {
         activeKnife = false;
         
         if (enemies.size() == 0) {
-            win = true;
+            saveScoreToSharedPrefs(1);
         }
     }
 
-    private void updateScore() {
-        score += 1;
+    private void updateScore(int operand) {
+        if (operand > 0) {
+            score += 1;
+        } else {
+            score -= 1;
+        }
     }
     private void throwKnife() {
         if (!alive) {
@@ -346,11 +350,8 @@ public class GameView extends View {
 
         drwNinja = ContextCompat.getDrawable(context, ninjaID);
         drwEnemy = ContextCompat.getDrawable(context, R.drawable.ninja_enemic);
+        drwMiniEnemy = ContextCompat.getDrawable(context, R.drawable.ninja_petit);
         drwKnife = ContextCompat.getDrawable(context, R.drawable.ganivet);
-
-        drwEnemyPieces[0] = ContextCompat.getDrawable(context, R.drawable.cap_ninja);
-        drwEnemyPieces[1] = ContextCompat.getDrawable(context, R.drawable.cos_ninja);
-        drwEnemyPieces[2] = ContextCompat.getDrawable(context, R.drawable.cua_ninja);
     }
 
     private void initializeDataAndSharedPrefs() {
@@ -364,9 +365,10 @@ public class GameView extends View {
         prefs = PreferenceManager.getDefaultSharedPreferences(this.getContext());
 
         chosenEnemies = Integer.parseInt(prefs.getString("chosenEnemies", "5"));
+        chosenSmallEnemies = Integer.parseInt(prefs.getString("chosenSmallEnemies", "3"));
     }
 
-    private void saveScoreToSharedPrefs() {
+    public void saveScoreToSharedPrefs(int endCode) {
         scoresPrefs = parent.getSharedPreferences(getContext().getString(R.string.preference_scores_name), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = scoresPrefs.edit();
         int last = 1, playerScore = 0;
@@ -383,6 +385,8 @@ public class GameView extends View {
         editor.putInt("score" + last, score);
 
         editor.apply();
+
+        parent.finishGame(endCode, score);
     }
 
     private void createNewPaints() {
